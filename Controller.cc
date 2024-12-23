@@ -1,31 +1,22 @@
-
 #include "Controller.h"
 #include "View.h"
 #include <fstream>
 #include <limits>
 #include <vector>
 
+/**
+ * @brief The Controller handles application logic, bridging between 
+ *        the View (UI) and the underlying data model (Podify).
+ */
 void Controller::launch(){
-    cout<<"Launching..."<<endl;
+    std::cout << "Launching..." << std::endl;
     initFromFile();
-    cout<<"Done initializing"<<endl;
+    std::cout << "Done initializing" << std::endl;
     int choice = -1;
-
-    // This is what the View shows:
-    // cout << "What would you like to do?"<< endl;
-    // cout << "  (1) Show all Podcasts" << endl;
-    // cout << "  (2) Show single Podcast" << endl;
-    // cout << "  (3) Get episode by host" << endl;
-    // cout << "  (4) Get episode by category" << endl;
-    // cout << "  (5) Get episode by host or category" << endl;
-    // cout << "  (6) Print current episode list" << endl;
-    // cout << "  (7) Play current episode list" << endl;
-    // cout << "  (8) Toggle video" << endl;
-    // cout << "  (0) Exit" << endl<<endl;
 
     while (true){
         choice = -1;
-        vector<string> menu ={
+        std::vector<std::string> menu = {
             "Show all Podcasts",
             "Show single Podcast",
             "Get episode by host",
@@ -36,104 +27,109 @@ void Controller::launch(){
             "Toggle video"
         };
         view.menu(menu, choice);
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    
-        if (choice == 0)break;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (choice == 0) break;
         switch (choice)
         {
-            case 1: showAllPodcasts(); break;
-            case 2: showSinglePodcast(); break;
-            case 3: getEpisodeByH(); break;
-            case 4: getEpisodeByC(); break;
-            case 5: getEpisodeByHandC(); break;
+            case 1: showAllPodcasts();     break;
+            case 2: showSinglePodcast();   break;
+            case 3: getEpisodeByH();       break;
+            case 4: getEpisodeByC();       break;
+            case 5: getEpisodeByHandC();   break;
             case 6: printCurrentEpisode(); break;
-            case 7: playCurrentEpisode(); break;
-            case 8: toggleVideo(); break;
+            case 7: playCurrentEpisode();  break;
+            case 8: toggleVideo();         break;
         }
-        
     }
-
-    cout << "Good-bye!"<<endl;
+    std::cout << "Good-bye!" << std::endl;
 }
 
-
-
 void Controller::initFromFile(){
-    ifstream episodeFile;
+    std::ifstream episodeFile;
     episodeFile.open("media/media.txt");
-    string podcast, host, temp;
-    string title, content, category, video;
+    std::string podcast, host, temp;
+    std::string title;
     int numEpisodes = 0;
 
-    while( true ){
-        if(!getline(episodeFile, podcast))break;
+    // Reading from file and populating the Podify object
+    while(true){
+        if(!getline(episodeFile, podcast)) break;
         getline(episodeFile, host);
 
         getline(episodeFile, temp);
-        numEpisodes = stoi(temp);
-        //this one should be an integer representing the 
-        //number of episodes on this podcast
+        numEpisodes = std::stoi(temp);
+
+        // Using the factory to create a new Podcast object
         av.addPodcast(pf.createPodcast(podcast, host));
+
+        // For each line, create episodes and add them to the Podcast
         for (int i = 0; i < numEpisodes; ++i){
             getline(episodeFile, title);
             Episode* episode = pf.createEpisode(podcast, host, title);
             if (episode == nullptr){
-                cout<<"WARNING*** Episode "<<title<< " not found"<<endl;
+                std::cout << "WARNING*** Episode " << title << " not found" << std::endl;
                 continue;
             }
             av.addEpisode(episode, podcast);
         }
-        
     }
-
     episodeFile.close();
-    
 }
 
 void Controller::showAllPodcasts(){
-    cout<<"Showing all podcasts: "<<endl;
+    std::cout << "Showing all podcasts: " << std::endl;
     view.printAllPodcasts(av.getPodcasts());
 }
 
 void Controller::showSinglePodcast(){
-    int choice = - 1;
+    int choice = -1;
     view.podcastMenu(av.getPodcasts(), choice);
+    if (choice < 0) return; // user chose 0 -> exit
     Podcast* podcast = av.getPodcast(choice);
     view.printPodcast(podcast);
 }
 
 void Controller::getEpisodeByH(){
-    string host;
+    std::string host;
     view.promptHost(host);
+    // Using the Factory to create a "host search" strategy object
     Search* crit = pf.hostSearch(host);
     playlist.clear();
     av.getEpisodes(*crit, playlist);
     delete crit;
 } 
+
 void Controller::getEpisodeByC(){
-    string cat;
+    std::string cat;
     view.promptCategory(cat);
+    // Another strategy object: "category search"
     Search* crit = pf.categorySearch(cat);
     playlist.clear();
     av.getEpisodes(*crit, playlist);
     delete crit;
 } 
+
 void Controller::getEpisodeByHandC(){
-    string host, cat;
+    std::string host, cat;
     view.promptHost(host);
     view.promptCategory(cat);
+    // Another strategy object: "host or category" search
     Search* crit = pf.hostCatSearch(host, cat);
     playlist.clear();
     av.getEpisodes(*crit, playlist);
     delete crit;
-} 
+}
+
 void Controller::printCurrentEpisode(){
-    cout<<"Playlist size: "<<playlist.getSize()<<endl;
+    std::cout << "Playlist size: " << playlist.getSize() << std::endl;
     view.printPlaylist(playlist);
 } 
+
 void Controller::playCurrentEpisode(){
     view.playPlaylist(playlist);
 }
+
 void Controller::toggleVideo(){
     view.promptVideo();
 }

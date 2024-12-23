@@ -6,20 +6,37 @@
 #include <cstdlib>
 #include "defs.h"
 
-using namespace std;
-
+/**
+ * @brief A templated array class with operator overloading demonstrating 
+ *        how we can add and remove elements (operator+=, operator-=) 
+ *        and access elements (operator[]).
+ * 
+ * This class shows:
+ *   - **Templates** (T can be any type).
+ *   - **Operator Overloading** for +=, -=, and [].
+ */
 template <typename T>
 class Array {
 public:
     Array();
     ~Array();
-    Array& operator+=(const T& item);     
-    Array& operator-=(const T& item);     
-    T& operator[](int index);             
-    const T& operator[](int index) const; 
+
+    // Operator+= to add an item to the Array
+    Array& operator+=(const T& item);
+
+    // Operator-= to remove an item from the Array
+    Array& operator-=(const T& item);
+
+    // Overloaded index operator (read-write)
+    T& operator[](int index);
+
+    // Overloaded index operator (read-only)
+    const T& operator[](int index) const;
+
     int getSize() const;
     void clear();
-    bool isFull() const;                 
+    bool isFull() const;
+
 private:
     int numElements;
     T elements[MAX_ARR];
@@ -30,12 +47,13 @@ Array<T>::Array() : numElements(0) {}
 
 template <typename T>
 Array<T>::~Array() {
+    // No dynamic memory used here.
 }
 
 template <typename T>
 Array<T>& Array<T>::operator+=(const T& item) {
     if (numElements >= MAX_ARR) {
-        cerr << "Array is full. Cannot add more items." << endl;
+        std::cerr << "Array is full. Cannot add more items." << std::endl;
         return *this;
     }
     elements[numElements++] = item;
@@ -51,7 +69,7 @@ Array<T>& Array<T>::operator-=(const T& item) {
         }
         ++index;
     }
-    if (index == numElements) return *this; 
+    if (index == numElements) return *this; // item not found
     --numElements;
     for (; index < numElements; ++index) {
         elements[index] = elements[index + 1];
@@ -62,7 +80,7 @@ Array<T>& Array<T>::operator-=(const T& item) {
 template <typename T>
 T& Array<T>::operator[](int index) {
     if (index < 0 || index >= numElements) {
-        cerr << "Array index out of bounds" << endl;
+        std::cerr << "Array index out of bounds" << std::endl;
         exit(1);
     }
     return elements[index];
@@ -71,7 +89,7 @@ T& Array<T>::operator[](int index) {
 template <typename T>
 const T& Array<T>::operator[](int index) const {
     if (index < 0 || index >= numElements) {
-        cerr << "Array index out of bounds" << endl;
+        std::cerr << "Array index out of bounds" << std::endl;
         exit(1);
     }
     return elements[index];

@@ -1,6 +1,10 @@
 #include "Podify.h"
 #include <cstdlib>
 
+/**
+ * @brief The Podify class aggregates all Podcasts and their Episodes, 
+ *        allowing for additions and searching of episodes.
+ */
 Podify::Podify() {}
 
 Podify::~Podify() {
@@ -18,14 +22,14 @@ void Podify::addPodcast(Podcast* podcast) {
     podcasts += podcast;
 }
 
-void Podify::addEpisode(Episode* episode, const string& podcastTitle) {
+void Podify::addEpisode(Episode* episode, const std::string& podcastTitle) {
     for (int i = 0; i < podcasts.getSize(); ++i) {
         if (podcasts[i]->equals(podcastTitle)) {
             podcasts[i]->add(episode);
             return;
         }
     }
-    cerr << "Podcast not found: " << podcastTitle << endl;
+    std::cerr << "Podcast not found: " << podcastTitle << std::endl;
 }
 
 const Array<Podcast*>& Podify::getPodcasts() const {
@@ -34,19 +38,19 @@ const Array<Podcast*>& Podify::getPodcasts() const {
 
 Podcast* Podify::getPodcast(int index) {
     if (index < 0 || index >= podcasts.getSize()) {
-        cerr << "Podcast index out of bounds" << endl;
+        std::cerr << "Podcast index out of bounds" << std::endl;
         exit(1);
     }
     return podcasts[index];
 }
 
-Podcast* Podify::getPodcast(const string& title) {
+Podcast* Podify::getPodcast(const std::string& title) {
     for (int i = 0; i < podcasts.getSize(); ++i) {
         if (podcasts[i]->equals(title)) {
             return podcasts[i];
         }
     }
-    cerr << "Podcast not found: " << title << endl;
+    std::cerr << "Podcast not found: " << title << std::endl;
     exit(1);
 }
 

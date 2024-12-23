@@ -7,23 +7,22 @@
 #include "Search.h"
 #include "Episode.h"
 
-using namespace std;
-
+/**
+ * @brief A Factory class to create Podcast, Episode, and Search objects, 
+ *        decoupling object creation logic from the rest of the application.
+ */
 class PodcastFactory {
-		
-	public:
+public:
+    // create an Episode
+    Episode* createEpisode(const std::string& pod, const std::string& host, const std::string& title);
 
-		// create an Episode
-		Episode* createEpisode(const string& pod, const string& host, const string& title);
+    // create a Podcast
+    Podcast* createPodcast(const std::string& title, const std::string& host);
 
-		// create a Podcast
-		Podcast* createPodcast(const string& title, const string& host);
-
-		// create a Search
-		Search* hostSearch(const string& host);
-		Search* categorySearch(const string& category);
-		Search* hostCatSearch(const string& artist, const string& category);
-
-	
+    // create a Search object
+    Search* hostSearch(const std::string& host);
+    Search* categorySearch(const std::string& category);
+    Search* hostCatSearch(const std::string& artist, const std::string& category);
 };
+
 #endif

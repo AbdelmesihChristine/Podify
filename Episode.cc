@@ -1,40 +1,47 @@
 #include "Episode.h"
 
-Episode::Episode(const string& podcastTitle, const string& host, const string& episodeTitle,
-                 const string& category, const string& audio, const string& videoFile)
+/**
+ * @brief Implementation of an Episode, containing references to audio/video data.
+ */
+Episode::Episode(const std::string& podcastTitle, const std::string& host,
+                 const std::string& episodeTitle, const std::string& category,
+                 const std::string& audio, const std::string& videoFile)
     : podcastTitle(podcastTitle), host(host), episodeTitle(episodeTitle),
       category(category), audio(audio), videoFile(videoFile) {}
 
-const string& Episode::getPodcastTitle() const {
+const std::string& Episode::getPodcastTitle() const {
     return podcastTitle;
 }
 
-const string& Episode::getHost() const {
+const std::string& Episode::getHost() const {
     return host;
 }
 
-const string& Episode::getEpisodeTitle() const {
+const std::string& Episode::getEpisodeTitle() const {
     return episodeTitle;
 }
 
-const string& Episode::getCategory() const {
+const std::string& Episode::getCategory() const {
     return category;
 }
 
-const string& Episode::getAudio() const {
+const std::string& Episode::getAudio() const {
     return audio;
 }
 
-const string& Episode::getVideoFile() const {
+const std::string& Episode::getVideoFile() const {
     return videoFile;
 }
 
-void Episode::print(ostream& ost) const {
-    ost << "Podcast: " << podcastTitle << ", Host: " << host << ", Category: " << category
+void Episode::print(std::ostream& ost) const {
+    ost << "Podcast: " << podcastTitle 
+        << ", Host: " << host 
+        << ", Category: " << category
         << ", Episode: " << episodeTitle;
 }
 
-ostream& operator<<(ostream& ost, const Episode& episode) {
+// Overloaded operator<< to print Episode objects
+std::ostream& operator<<(std::ostream& ost, const Episode& episode) {
     episode.print(ost);
     return ost;
 }

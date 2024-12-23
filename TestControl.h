@@ -12,45 +12,32 @@
 #include "PodcastFactory.h"
 #include <fstream>
 
-using namespace std;
-
+/**
+ * @brief Orchestrates a series of tests, using Podify, View, and 
+ *        the Tester utility to confirm correct behaviors.
+ */
 class TestControl {
-		
-	public:
-		void launch();
+public:
+	void launch();
 	
-	private:
-		void initPodcasts(Podify& podify, vector<string>& podcasts, vector<string>& hosts);
-		void initWithEpisodes(Podify& podify, 
-						vector<string>& podcasts, 
-						vector<string>& hosts, 
-						vector<string>& epTitles);
-		// vector<string> menu ={
-		// 	"Test add and print Podcasts",
-		// 	"Test add and print Episodes",
-		// 	"Test get Episodes by host",
-		// 	"Test get Episodes by category",
-		// 	"Test get Episodes by host or category",
-		// 	"Test print current episode list",
-		// 	"Test play current episode list",
-		// 	"Test all and get mark"
-		// };
-		int testAddPodcasts();
-		int testAddEpisodes();
-		int testGetEpisodesByHost();
-		int testGetEpisodesByCategory();
-		int testGetEpisodesByHostAndCategory();
-		// int testPrintCurrentEpisodeList();
-		int testPlayCurrentEpisodeList();
-		int testAllAndMark();
+private:
+	void initPodcasts(Podify& podify, std::vector<std::string>& podcasts, std::vector<std::string>& hosts);
+	void initWithEpisodes(Podify& podify, 
+						  std::vector<std::string>& podcasts, 
+						  std::vector<std::string>& hosts, 
+						  std::vector<std::string>& epTitles);
 
-		
+	void testAddPodcasts();
+	void testAddEpisodes();
+	void testGetEpisodesByHost();
+	void testGetEpisodesByCategory();
+	void testGetEpisodesByHostAndCategory();
+	void testPlayCurrentEpisodeList();
+	void testAllAndMark();
 
-		View view;
-		Tester tester;
-		PodcastFactory pf;	
-
-		
-	
+	View view;
+	Tester tester;
+	PodcastFactory pf;	
 };
+
 #endif

@@ -8,17 +8,19 @@
 #include "Episode.h"
 #include "Search.h"
 
-using namespace std;
-
+/**
+ * @brief The core data model, holding all available Podcasts. 
+ *        It uses the Array<T> template for storage.
+ */
 class Podify {
 public:
     Podify();
     ~Podify();
     void addPodcast(Podcast* podcast);
-    void addEpisode(Episode* episode, const string& podcastTitle);
+    void addEpisode(Episode* episode, const std::string& podcastTitle);
     const Array<Podcast*>& getPodcasts() const;
     Podcast* getPodcast(int index);
-    Podcast* getPodcast(const string& title);
+    Podcast* getPodcast(const std::string& title);
     void getEpisodes(Search& search, Array<Episode*>& matches);
 
 private:

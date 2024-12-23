@@ -1,16 +1,16 @@
 objects = main.o View.o Controller.o Podify.o Podcast.o Episode.o PodcastPlayer.o PodcastFactory.o Search.o
 testobjects = test.o View.o TestControl.o Tester.o Podify.o Podcast.o Episode.o PodcastPlayer.o PodcastFactory.o Search.o
 
-all: a5 a5test
+all: Podify Podifytest
 
-a5: $(objects)
-	g++ -o a5 $(objects)
+Podify: $(objects)
+	g++ -o Podify $(objects)
 
 main.o: main.cc Array.h
 	g++ -c main.cc 
 
-a5test: $(testobjects)
-	g++ -o a5test $(testobjects)
+Podifytest: $(testobjects)
+	g++ -o Podifytest $(testobjects)
 
 test.o: test.cc Array.h
 	g++ -c test.cc
@@ -48,4 +48,4 @@ Search.o: Search.cc Search.h
 	g++ -c Search.cc
 
 clean:
-	rm -f a5 a5test *.o	
+	rm -f Podify Podifytest *.o	

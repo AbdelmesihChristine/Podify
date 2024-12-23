@@ -2,115 +2,122 @@
 #include <limits>
 #include <vector>
 #include <cstdlib>
-#include <sstream> 
+#include <sstream>
 
+/**
+ * @brief The View class is responsible for interacting with the user 
+ *        (input/output) and using a PodcastPlayer strategy (Audio or Video).
+ * 
+ * It demonstrates the **Strategy Pattern**:
+ *   - `player` is a pointer to a PodcastPlayer.
+ *   - We can switch it at runtime (toggleVideo) between AudioPlayer or VideoPlayer.
+ */
 View::View() {
     player = &audioPlayer; 
 }
 
-void View::menu(vector<string>& menu, int& choice) {
-    cout << endl;
-    cout << "Please make a selection:" << endl << endl;
-    for (int i = 0; i < menu.size(); ++i) {
-        cout << "  (" << i + 1 << ") " << menu[i] << endl;
+void View::menu(std::vector<std::string>& menu, int& choice) {
+    std::cout << std::endl;
+    std::cout << "Please make a selection:" << std::endl << std::endl;
+    for (int i = 0; i < (int)menu.size(); ++i) {
+        std::cout << "  (" << i + 1 << ") " << menu[i] << std::endl;
     }
-    cout << "  (0) Exit" << endl << endl;
+    std::cout << "  (0) Exit" << std::endl << std::endl;
 
-    string input;
+    std::string input;
     while (true) {
-        cout << "Enter your selection: ";
-        getline(cin, input);
+        std::cout << "Enter your selection: ";
+        getline(std::cin, input);
 
-        stringstream ss(input);
-        if (ss >> choice && ss.eof() && choice >= 0 && choice <= menu.size()) {
+        std::stringstream ss(input);
+        if (ss >> choice && ss.eof() && choice >= 0 && choice <= (int)menu.size()) {
             break;
         }
-        cout << "Invalid selection. Please enter a number between 0 and " << menu.size() << "." << endl;
+        std::cout << "Invalid selection. Please enter a number between 0 and " 
+                  << menu.size() << "." << std::endl;
     }
 }
 
 void View::printAllPodcasts(const Array<Podcast*>& podcasts) {
     for (int i = 0; i < podcasts.getSize(); ++i) {
-        cout << i + 1 << ": " << *podcasts[i] << endl;
+        std::cout << i + 1 << ": " << *podcasts[i] << std::endl;
     }
 }
 
 void View::podcastMenu(const Array<Podcast*>& podcasts, int& choice) {
     int numOptions = podcasts.getSize();
-
     printAllPodcasts(podcasts);
 
-    cout << endl;
-    cout << "Choose a podcast" << endl;
-    cout << "or select (0) to exit" << endl;
+    std::cout << std::endl;
+    std::cout << "Choose a podcast" << std::endl;
+    std::cout << "or select (0) to exit" << std::endl;
 
-    string input;
+    std::string input;
     while (true) {
-        cout << "Enter your selection: ";
-        getline(cin, input);
+        std::cout << "Enter your selection: ";
+        getline(std::cin, input);
 
-        stringstream ss(input);
+        std::stringstream ss(input);
         if (ss >> choice && ss.eof() && choice >= 0 && choice <= numOptions) {
             break;
         }
-        cout << "Invalid selection. Please enter a number between 0 and " << numOptions << "." << endl;
+        std::cout << "Invalid selection. Please enter a number between 0 and " 
+                  << numOptions << "." << std::endl;
     }
-    if (choice == 0)
-        return;
+    if (choice == 0) return;
     --choice; 
 }
 
 void View::printPodcast(const Podcast* podcast) {
-    podcast->printWithEpisodes(cout);
+    podcast->printWithEpisodes(std::cout);
 }
 
-void View::promptHost(string& host) {
-    cout << "Enter host: ";
-    getline(cin, host);
+void View::promptHost(std::string& host) {
+    std::cout << "Enter host: ";
+    getline(std::cin, host);
 }
 
-void View::promptCategory(string& category) {
-    cout << "Enter category: ";
-    getline(cin, category);
+void View::promptCategory(std::string& category) {
+    std::cout << "Enter category: ";
+    getline(std::cin, category);
 }
 
 void View::printPlaylist(const Array<Episode*>& episodes) {
     for (int i = 0; i < episodes.getSize(); ++i) {
-        cout << *episodes[i] << endl;
+        std::cout << *episodes[i] << std::endl;
     }
 }
 
 void View::playPlaylist(const Array<Episode*>& episodes) {
-    cout << "Playing playlist of size " << episodes.getSize() << endl;
+    std::cout << "Playing playlist of size " << episodes.getSize() << std::endl;
     for (int i = 0; i < episodes.getSize(); ++i) {
-        cout << endl << *episodes[i] << endl;
-        player->play(*episodes[i], cout);
-        cout << endl;
+        std::cout << std::endl << *episodes[i] << std::endl;
+        player->play(*episodes[i], std::cout);
+        std::cout << std::endl;
     }
 }
 
 void View::promptVideo() {
-    cout << endl;
-    cout << "  (0) Exit (no change)" << endl;
-    cout << "  (1) Audio player only" << endl;
-    cout << "  (2) Audio and Video player" << endl << endl;
+    std::cout << std::endl;
+    std::cout << "  (0) Exit (no change)" << std::endl;
+    std::cout << "  (1) Audio player only" << std::endl;
+    std::cout << "  (2) Audio and Video player" << std::endl << std::endl;
 
-    string input;
+    std::string input;
     int choice = -1;
 
     while (true) {
-        cout << "Enter your selection: ";
-        getline(cin, input);
+        std::cout << "Enter your selection: ";
+        getline(std::cin, input);
 
-        stringstream ss(input);
+        std::stringstream ss(input);
         if (ss >> choice && ss.eof() && choice >= 0 && choice <= 2) {
             break;
         }
-        cout << "Invalid selection. Please enter 0, 1, or 2." << endl;
+        std::cout << "Invalid selection. Please enter 0, 1, or 2." << std::endl;
     }
 
-    if (choice == 0)
-        return;
+    if (choice == 0) return;
 
     toggleVideo(choice == 2);
 }

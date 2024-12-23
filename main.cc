@@ -5,11 +5,9 @@
 #include "View.h"
 #include <vector>
 
-
-using namespace std;
-
-
-
+/**
+ * @brief Entry point for the entire Podify application.
+ */
 int main(){
     Controller control;
     control.launch();

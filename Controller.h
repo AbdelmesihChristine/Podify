@@ -7,12 +7,14 @@
 #include "View.h"
 #include "PodcastFactory.h"
 
-using namespace std;
-
+/**
+ * @brief The Controller class coordinates interactions between the View
+ *        and the Podify data model, including loading from file and 
+ *        handling user actions.
+ */
 class Controller {
 		
 	public:
-				
 		void launch();
 	
 	private:
@@ -25,11 +27,13 @@ class Controller {
 		void printCurrentEpisode(); 
 		void playCurrentEpisode(); 
 		void toggleVideo(); 
+
 		View view;
 		Podify av;
 		PodcastFactory pf;
-		Array<Episode*> playlist;
 
-	
+        // A dynamic list of Episodes
+		Array<Episode*> playlist;
 };
+
 #endif

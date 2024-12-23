@@ -1,144 +1,131 @@
 #include "Tester.h"
 
-// strangely difficult to get this to work correctly
+/**
+ * @brief Implementation of a small utility class to capture std::cout 
+ *        and check for certain strings. Useful for "automation" in tests.
+ */
 void Tester::pressEnterToContinue(){
-    std::cout << "Press enter to continue..."<<endl;
-    //cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    char c = cin.get();
-    while ( c != '\n') { 
-        c = cin.get();
+    std::cout << "Press enter to continue..." << std::endl;
+    char c = std::cin.get();
+    while (c != '\n') {
+        c = std::cin.get();
     }
 }
 
 void Tester::clearInputBuffer(){
-    char c = cin.get();
+    char c = std::cin.get();
     while ( c != '\n') { 
-        c = cin.get();
+        c = std::cin.get();
     }
 }
 
-void Tester::find(const vector<int>& keys, const string* search, int& error){
-    int found = -1;
+void Tester::find(const std::vector<int>& keys, const std::string* search, int& error){
+    int foundPos = -1;
     error = 0;
-    vector<int>::const_iterator ivid;
-    for (ivid = keys.begin(); ivid != keys.end(); ++ivid){
-        found = output.find(search[*ivid]);
-        if (found == string::npos){
-            std::cout<<search[*ivid]<<" not found"<<endl;
+    for (auto k : keys){
+        foundPos = output.find(search[k]);
+        if (foundPos == std::string::npos){
+            std::cout << "[Tester] " << search[k] << " not found" << std::endl;
             ++error;
-        } 
+        }
     }
 }
 
-void Tester::find(const vector<string>& toFind, int& error){
-    int found = -1;
+void Tester::find(const std::vector<std::string>& toFind, int& error){
+    int foundPos = -1;
     error = 0;
-    for (string tf: toFind){
-        found = output.find(tf);
-        if (found == string::npos){
-            std::cout<<tf<<" not found"<<endl;
+    for (auto& tf : toFind){
+        foundPos = output.find(tf);
+        if (foundPos == std::string::npos){
+            std::cout << "[Tester] " << tf << " not found" << std::endl;
             ++error;
-        } 
+        }
     }
 }
 
-void Tester::confirmAbsent(const vector<int>& keys, const string* search, int& error){
-    int found = -1;
+void Tester::confirmAbsent(const std::vector<int>& keys, const std::string* search, int& error){
+    int foundPos = -1;
     error = 0;
-    vector<int>::const_iterator ivid;
-    for (ivid = keys.begin(); ivid != keys.end(); ++ivid){
-        found = output.find(search[*ivid]);
-        if (found != string::npos){
-            std::cout<<search[*ivid]<<" found but should not be"<<endl;
+    for (auto k : keys){
+        foundPos = output.find(search[k]);
+        if (foundPos != std::string::npos){
+            std::cout << "[Tester] " << search[k] << " found but should not be" << std::endl;
             ++error;
-        } 
+        }
     }
 }
 
-void Tester::confirmAbsent(const vector<string>& absent, int& error){
-    int found = -1;
+void Tester::confirmAbsent(const std::vector<std::string>& absent, int& error){
+    int foundPos = -1;
     error = 0;
-    for (string ab: absent){
-        found = output.find(ab);
-        if (found != string::npos){
-            std::cout<<ab<<" found but should not be"<<endl;
+    for (auto& ab : absent){
+        foundPos = output.find(ab);
+        if (foundPos != std::string::npos){
+            std::cout << "[Tester] " << ab << " found but should not be" << std::endl;
             ++error;
-        } 
+        }
     }
 }
 
-void Tester::findInOrder(const vector<int>& keys, const string* search, int& error){
-    int found = -1;
+void Tester::findInOrder(const std::vector<int>& keys, const std::string* search, int& error){
+    int foundPos = -1;
     error = 0;
-    vector<int>::const_iterator ivid;
-    for (ivid = keys.begin(); ivid != keys.end(); ++ivid){
-        found = output.find(search[*ivid], found+1);
-        if (found == string::npos){
-            std::cout<<search[*ivid]<<" not found in order"<<endl;
+    for (auto k : keys){
+        foundPos = output.find(search[k], foundPos + 1);
+        if (foundPos == std::string::npos){
+            std::cout << "[Tester] " << search[k] << " not found in order" << std::endl;
             ++error;
-        } 
+        }
     }
 }
 
-void Tester::findInOrder(const vector<string>& toFind, int& error){
-    int found = -1;
+void Tester::findInOrder(const std::vector<std::string>& toFind, int& error){
+    int foundPos = -1;
     error = 0;
-    for (string tf: toFind){
-        found = output.find(tf, found+1);
-        if (found == string::npos){
-            std::cout<<tf<<" not found in order"<<endl;
+    for (auto& tf : toFind){
+        foundPos = output.find(tf, foundPos + 1);
+        if (foundPos == std::string::npos){
+            std::cout << "[Tester] " << tf << " not found in order" << std::endl;
             ++error;
-        } 
+        }
     }
 }
 
 void Tester::initCapture(){
     oldCoutStreamBuf = std::cout.rdbuf();
-    ostringstream temp;
+    std::ostringstream temp;
     strCout.swap(temp);
-    std::cout.rdbuf( strCout.rdbuf() );
+    std::cout.rdbuf(strCout.rdbuf());
 }
 
 void Tester::endCapture(){
-    std::cout.rdbuf( oldCoutStreamBuf );
+    std::cout.rdbuf(oldCoutStreamBuf);
     output = strCout.str();
     std::cout << output;
 }
 
-void Tester::ran(vector<int>& list, int count, int range){
-    unordered_set<int> s;
-    const int range_from  = 0;
-    std::random_device                  rand_dev;
-    std::mt19937                        generator(rand_dev());
-    std::uniform_int_distribution<int>  distr(range_from, range-1);
+void Tester::ran(std::vector<int>& list, int count, int range){
+    std::unordered_set<int> s;
+    const int range_from = 0;
+    std::random_device rand_dev;
+    std::mt19937 generator(rand_dev());
+    std::uniform_int_distribution<int> distr(range_from, range - 1);
 
-    while (s.size() < count){
+    while (s.size() < (size_t)count){
         s.insert(distr(generator));
     }
-    unordered_set<int>::iterator it;
-    for (it = s.begin(); it!=s.end();++it){
-        list.push_back(*it);
+    for (auto el : s){
+        list.push_back(el);
     }
 }
 
-// generate and return a single random number in the range range_from to range_to - 1
 int Tester::ran(int range_from, int range_to){
-    std::random_device                  rand_dev;
-    std::mt19937                        generator(rand_dev());
-    std::uniform_int_distribution<int>  distr(range_from, range_to-1);
+    std::random_device rand_dev;
+    std::mt19937 generator(rand_dev());
+    std::uniform_int_distribution<int> distr(range_from, range_to - 1);
     return distr(generator);
 }
 
-
-/* 
-* On Gradescope a new Tester file will be copied in with your submission. 
-* It will be identical to this one except that the recordMark function 
-* will be replaced. You should not need to modify this file 
-* (but it won't matter if you do as it will be replaced).
-*/
-void Tester::recordMark(int test, int mark, int outof){
-    if (outof == 0)
-        std::cout<<"Test number: " <<test<<" Mark: "<<mark;
-    else
-        std::cout<<"Test number: " <<test<<" Mark: "<<mark<<"/"<<outof;
+void Tester::recordMark(int, int, int){
+    std::cout << "[Tester] called. " << std::endl;
 }

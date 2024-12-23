@@ -6,22 +6,26 @@
 #include "Array.h"
 #include "Episode.h"
 
-using namespace std;
-
+/**
+ * @brief A Podcast contains a list (Array) of Episode pointers.
+ */
 class Podcast {
 public:
-    Podcast(const string& title, const string& host);
-    bool equals(const string& title) const;
+    Podcast(const std::string& title, const std::string& host);
+
+    bool equals(const std::string& title) const;
     Episode* get(int index);
     int getSize() const;
-    void print(ostream& ost) const;
-    void printWithEpisodes(ostream& ost) const;
+
+    void print(std::ostream& ost) const;
+    void printWithEpisodes(std::ostream& ost) const;
     void add(Episode* episode);
-    friend ostream& operator<<(ostream& ost, const Podcast& podcast);
+
+    friend std::ostream& operator<<(std::ostream& ost, const Podcast& podcast);
 
 private:
-    string title;
-    string host;
+    std::string title;
+    std::string host;
     Array<Episode*> episodes;
 };
 
