@@ -1,0 +1,42 @@
+COMP 2404B  - Assignment 5
+
+Project details:
+	Name: Christine Abdelmesih
+	Student# : 101323008
+	Date Created: [04 December 2024]
+
+Files Included:
+	Makefile
+
+	defs.h
+	main.cc
+	Array.h
+	Podcast.cc
+	Podcast.h
+	Controller.cc
+	Controller.h
+	Episode.cc
+	Episode.h
+	Search.cc
+	Search.h
+	Podify.cc
+	Podify.h
+	PodcastPlayer.cc
+	PodcastPlayer.h
+	View.cc
+	View.h
+	PodcastFactory.cc
+	PodcastFactory.h
+	TestControl.cc
+	TestControl.h
+	Tester.cc
+	Tester.h
+	test.cc
+
+Compilation and Execution
+	To compile and run the executable files:
+
+	The first way using Makefile:
+		make clean               //to clear all.o files   
+		make                     // to ensure compilation and create new.o files
+		./a5test                   //Run and test 
